@@ -1,0 +1,23 @@
+### Listar Categorias
+GET http://localhost:3000/api/categorias
+
+### Alta de Categoria
+POST http://localhost:3000/api/categorias
+Content-Type: application/json
+
+{
+    "nombre": "Gastos Hormiga",
+    "color": "#FF5733"
+}
+
+### Modificar Categoria
+PUT http://localhost:3000/api/categorias/1
+Content-Type: application/json
+
+{
+    "nombre": "Deporte Modificado",
+    "color": "#33FF57"
+}
+
+### Eliminar Categoria
+DELETE http://localhost:3000/api/categorias/1

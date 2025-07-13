@@ -1,0 +1,29 @@
+###Listar los movimientos
+GET http://localhost:3000/api/movimientos
+
+###Alta de movimiento
+POST http://localhost:3000/api/movimientos
+Content-Type: application/json
+
+{
+    "descripcion": "Cuota Gym AMICCI",
+    "monto": 20000,
+    "fecha": "2025-07-12",
+    "tipo": "EGRESO",
+    "categoriaId": 1
+}
+
+### Modificar movimiento
+PUT http://localhost:3000/api/movimientos/1
+Content-Type: application/json
+
+{
+    "descripcion": "Cuota Gym AMICCI",
+    "monto": 20000,
+    "fecha": "2025-07-12",
+    "tipo": "EGRESO",
+    "categoriaId": 1
+}
+
+### Eliminar movimiento
+DELETE http://localhost:3000/api/movimientos/3
