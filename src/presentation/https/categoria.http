@@ -6,8 +6,8 @@ POST http://localhost:3000/api/categorias
 Content-Type: application/json
 
 {
-    "nombre": "Gastos Hormiga",
-    "color": "#FF5733"
+    "nombre": "Becas",
+    "color": "#FF1233"
 }
 
 ### Modificar Categoria
@@ -21,3 +21,6 @@ Content-Type: application/json
 
 ### Eliminar Categoria
 DELETE http://localhost:3000/api/categorias/1
+
+###Listar metricas por categoria
+GET http://localhost:3000/api/categorias/metricas

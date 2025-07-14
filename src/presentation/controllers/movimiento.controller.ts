@@ -6,6 +6,8 @@ import { MikroORM } from '@mikro-orm/core';
 import { ListarMovimiento } from '../../application/use-cases/movimientoUseCase/ListarMovimientos.ts';
 import { ActualizarMovimiento } from '../../application/use-cases/movimientoUseCase/ActualizarMovimiento.ts';
 import { EliminarMovimiento } from '../../application/use-cases/movimientoUseCase/EliminarMovimiento.ts';
+import { ListarMovimientosFiltrados } from '../../application/use-cases/movimientoUseCase/ListarMovimientosFiltrados.ts';
+import { validarParametrosFiltrado } from './funcionesParaControladores/validarParametrosFiltrado.ts';
 
 export const registrarMovimiento = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -109,3 +111,42 @@ export const eliminarMovimiento = async (req: Request, res: Response): Promise<v
         return;
     };
 };
+
+export const listarMovimientosFiltrados = async (req:Request, res:Response): Promise<void> =>{
+    try{
+        const {tipo, mes} = req.query;
+
+        if(!tipo || !mes){
+            res.status(400).json({ error: 'Fltan parametros \'tipo\' y/o \'mes\'' });
+            return;
+        };
+
+        const tipoStr = req.query.tipo?.toString() ?? "";
+        const mesStr = req.query.mes?.toString() ?? "";
+
+        const errores = validarParametrosFiltrado(tipoStr, mesStr);
+        if (errores.length > 0) {
+            res.status(400).json({ errores });
+            return;
+        };
+
+        const orm = (req.app.locals as { orm: MikroORM }).orm;
+        const em = orm.em.fork() as SqlEntityManager;
+        const repo = new MovimientoRepositoryORM(em);
+        const casouso = new ListarMovimientosFiltrados(repo);
+
+        const movimientos = await casouso.ejecutar(tipo.toString(), mes.toString());
+        if (movimientos.length === 0) {
+            res.status(404).json({ message: 'No se encontraron movimientos filtrados' });
+            return;
+        };
+
+        res.status(200).json(movimientos);
+        return;
+
+    } catch(error){
+        console.error('Error al listar movimientos filtrados:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+        return;
+    }
+}

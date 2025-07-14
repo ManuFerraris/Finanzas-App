@@ -8,4 +8,5 @@ export interface MovimientoRepository {
     getAllMovimientos(): Promise<Movimiento[]>;
     buscarMovimientoPorId(id: number): Promise<Movimiento | null>;
     eliminarMovimiento(movimiento:Movimiento): Promise<void>;
+    buscarPorTipoYFecha(tipo: string, desde: Date, hasta: Date): Promise<Movimiento[]>;
 };

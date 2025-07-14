@@ -2,6 +2,7 @@ import { Movimiento } from "../../../../domain/entities/Movimiento.ts";
 import { MovimientoRepository } from "../../../../application/interfaces/MovimientoRepository.ts";
 import { EntityManager } from "@mikro-orm/mysql";
 import { Categoria } from "../../../../domain/entities/Categoria.ts";
+import { TipoMovimiento } from "../../../../domain/enums/TipoMovimiento.ts";
 
 export class MovimientoRepositoryORM implements MovimientoRepository {
 
@@ -29,5 +30,15 @@ export class MovimientoRepositoryORM implements MovimientoRepository {
 
     async eliminarMovimiento(movimiento: Movimiento): Promise<void> {
         await this.em.removeAndFlush(movimiento);
+    };
+
+    async buscarPorTipoYFecha(tipo: string, desde: Date, hasta: Date): Promise<Movimiento[]> {
+        return await this.em.find(
+            Movimiento,
+            {
+                tipo: tipo as TipoMovimiento,
+                fecha: { $gte: desde, $lt: hasta }
+            },
+            { populate: ['categoria'] });
     };
 };
