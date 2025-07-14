@@ -4,7 +4,8 @@ import {
     listarMovimientos, 
     editarMovimiento, 
     eliminarMovimiento,
-    listarMovimientosFiltrados } from "../controllers/movimiento.controller.ts";
+    listarMovimientosFiltrados,
+    listarMetricasPorCategoria } from "../controllers/movimiento.controller.ts";
 
 const movimientoRouter = Router();
 
@@ -13,5 +14,6 @@ movimientoRouter.get('/', listarMovimientos);
 movimientoRouter.put('/:id', editarMovimiento);
 movimientoRouter.delete('/:id', eliminarMovimiento);
 movimientoRouter.get('/filtrados', listarMovimientosFiltrados);
+movimientoRouter.get('/metricas/categorias', listarMetricasPorCategoria);
 
 export default movimientoRouter;

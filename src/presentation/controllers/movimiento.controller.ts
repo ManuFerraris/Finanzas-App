@@ -8,6 +8,7 @@ import { ActualizarMovimiento } from '../../application/use-cases/movimientoUseC
 import { EliminarMovimiento } from '../../application/use-cases/movimientoUseCase/EliminarMovimiento.ts';
 import { ListarMovimientosFiltrados } from '../../application/use-cases/movimientoUseCase/ListarMovimientosFiltrados.ts';
 import { validarParametrosFiltrado } from './funcionesParaControladores/validarParametrosFiltrado.ts';
+import { ObtenerMetricasPorCategoria } from '../../application/use-cases/movimientoUseCase/ObtenerMetricasPorCategoria.ts';
 
 export const registrarMovimiento = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -146,6 +147,33 @@ export const listarMovimientosFiltrados = async (req:Request, res:Response): Pro
 
     } catch(error){
         console.error('Error al listar movimientos filtrados:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+        return;
+    }
+};
+
+export const listarMetricasPorCategoria = async (req: Request, res: Response): Promise<void> => {
+    try{
+        const tipo = req.query.tipo?.toString() ?? "";
+        const mes = req.query.mes?.toString() ?? "";
+
+        const errores = validarParametrosFiltrado(tipo, mes);
+        if (errores.length > 0) {
+            res.status(400).json({ errores });
+            return;
+        };
+
+        const orm = (req.app.locals as { orm: MikroORM }).orm;
+        const em = orm.em.fork() as SqlEntityManager;
+        const repo = new MovimientoRepositoryORM(em);
+        const casoUso = new ObtenerMetricasPorCategoria(repo);
+
+        const resultado = await casoUso.ejecutar(tipo, mes);
+        res.status(200).json(resultado);
+        return;
+
+    }catch(error){
+        console.error('Error al listar métricas por categoría:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
         return;
     }

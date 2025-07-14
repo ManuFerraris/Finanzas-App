@@ -30,3 +30,6 @@ DELETE http://localhost:3000/api/movimientos/3
 
 ### Filtrar movimientos por tipo y fecha
 GET http://localhost:3000/api/movimientos/filtrados?tipo=INGRESO&mes=2025-07
+
+#### Listar métricas por categoría
+GET http://localhost:3000/api/movimientos/metricas/categorias?tipo=EGRESO&mes=2025-07
