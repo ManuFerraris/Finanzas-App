@@ -31,3 +31,4 @@ node_modules/
 
 #Ignorar los archivos de solicitudes http
 *.http
+node_modules
