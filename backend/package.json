@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "mikro-orm": "mikro-orm",
+    "dev": "node --loader ts-node/esm src/main.ts",
+    "start:dev": "nodemon --watch src --ext ts --exec \"node --loader ts-node/esm src/main.ts\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@mikro-orm/cli": "^6.4.16",
+    "@mikro-orm/core": "^6.4.16",
+    "@mikro-orm/migrations": "^6.4.16",
+    "@mikro-orm/mysql": "^6.4.16",
+    "@mikro-orm/nestjs": "^6.1.1",
+    "@mikro-orm/sql-highlighter": "^1.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.4",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
