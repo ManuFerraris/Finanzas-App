@@ -2,26 +2,33 @@ import { useState } from "react";
 import { getMovimientosFiltrados } from "../api/movimientos";
 import type { Movimiento } from "../types/Movimiento";
 import { FiltroMovimientos } from "../components/FiltroMovimientos";
+import { calcularTotal } from "../utils/calcularTotal";
 
 export function MovimientosFiltrados() {
     const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
-    const [filtroActivo, setFiltroActivo] = useState<{ tipo: string; mes: string }>({
+    const [/*filtroActivo*/, setFiltroActivo] = useState<{ tipo: string; mes: string }>({
         tipo: "EGRESO", mes: "2025-07"
     });
+    const [error, setError] = useState<string | null>(null);
+    const total = calcularTotal(movimientos);
 
     const filtrar = (tipo: string, mes: string) => {
         setFiltroActivo({ tipo, mes });
-        getMovimientosFiltrados(tipo, mes)
-            .then(setMovimientos);
-        };
+        getMovimientosFiltrados(tipo, mes).then(({ datos, error }) => {
+            setMovimientos(datos);
+            setError(error);
+        });
+    };
 
     return (
     <div>
         <h2>Movimientos filtrados</h2>
         <FiltroMovimientos onFiltrar={filtrar} />
 
-        {movimientos.length === 0 ? (
-            <p>No se encontraron movimientos para {filtroActivo.tipo} en {filtroActivo.mes}</p>
+        {error ? (
+            <p style={{ color: "red" }}>{error}</p>
+        ) : movimientos.length === 0 ? (
+            <p>No hay movimientos cargados en el frontend.</p>
         ) : (
             <table>
             <thead>
@@ -43,6 +50,12 @@ export function MovimientosFiltrados() {
                 ))}
             </tbody>
             </table>
+        )}
+
+        {movimientos.length > 0 && (
+            <div style={{ marginBottom: "1rem", padding: "1rem", background: "#f1f1f1", color: "#1A7D1A", fontWeight: "bold" }}>
+                <strong>Total del período:</strong> ${total.toLocaleString()}
+            </div>
         )}
         </div>
     );
