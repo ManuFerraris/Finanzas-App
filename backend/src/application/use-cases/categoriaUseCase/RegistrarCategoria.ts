@@ -5,7 +5,7 @@ import { CategoriaRepository } from "../../interfaces/CategoriaRepository.ts";
 export class RegistrarCategoria {
     constructor(private readonly repo: CategoriaRepository) {}
 
-    async ejecutar(dto: RegistrarCategoriaDTO): Promise<string[]> {
+    async ejecutar(dto: RegistrarCategoriaDTO): Promise<string[] | number> {
         const errores = validarCategoria(dto);
         if (errores.length > 0) return errores;
 
@@ -22,6 +22,6 @@ export class RegistrarCategoria {
         // El numero de movimientos es autoincremental.
 
         await this.repo.guardar(categoria);
-        return [];
+        return categoria.nro;
     };
 };

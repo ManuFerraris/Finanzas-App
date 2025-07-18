@@ -3,8 +3,12 @@ export interface ActualizarCategoriaDTO {
     color: string;
 };
 
-export function validarActualizacionCategoria(dto: ActualizarCategoriaDTO): string[] {
+export function validarActualizacionCategoria(nro:number, dto: ActualizarCategoriaDTO): string[] {
     const errores: string[] = [];
+    
+    if(typeof nro !== "number" || isNaN(nro) || nro <= 0) {
+        errores.push("Número de categoría inválido.");
+    };
     
     if (!dto.nombre || dto.nombre.trim().length === 0) {
         errores.push("El nombre de la categoría es obligatorio.");

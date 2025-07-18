@@ -1,5 +1,6 @@
 import { api } from "./axios.ts";
 import { AxiosError } from "axios";
+
 export async function getMovimientosFiltrados(tipo: string, mes:string) {
     try{
         const res = await api.get(`/movimientos/filtrados`, {

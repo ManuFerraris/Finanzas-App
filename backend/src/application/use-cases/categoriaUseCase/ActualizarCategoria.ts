@@ -6,7 +6,7 @@ export class ActualizarCategoria {
     constructor(private readonly repo: CategoriaRepository) {};
 
     async ejecutar(nro: number, dto: ActualizarCategoriaDTO): Promise<string[]> {
-        const errores = validarActualizacionCategoria(dto);
+        const errores = validarActualizacionCategoria(nro, dto);
         if (errores.length > 0) return errores;
 
         const categoria = await this.repo.buscarCategoriaPorId(nro);

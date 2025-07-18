@@ -21,7 +21,7 @@ export const registrarMovimiento = async (req: Request, res: Response): Promise<
 
         const errores = await casouso.ejecutar(dto);
         if (errores.length > 0) {
-        res.status(400).json({ errores });
+        res.status(400).json({ message: errores[0] });
         return;
         };
 
@@ -69,7 +69,7 @@ export const editarMovimiento = async (req: Request, res: Response): Promise<voi
 
         const errores = await casouso.ejecutar(id, dto);
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 
@@ -99,7 +99,7 @@ export const eliminarMovimiento = async (req: Request, res: Response): Promise<v
         const errores = await casouso.ejecutar(movimientoId);
 
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 
@@ -127,7 +127,7 @@ export const listarMovimientosFiltrados = async (req:Request, res:Response): Pro
 
         const errores = validarParametrosFiltrado(tipoStr, mesStr);
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 
@@ -159,7 +159,7 @@ export const listarMetricasPorCategoria = async (req: Request, res: Response): P
 
         const errores = validarParametrosFiltrado(tipo, mes);
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 

@@ -16,15 +16,24 @@ export const registrarCategoria = async (req: Request, res: Response): Promise<v
 
         const dto = req.body;
 
-        const errores = await casouso.ejecutar(dto);
-        if (errores.length > 0) {
-            res.status(400).json({ errores });
+        const resultado = await casouso.ejecutar(dto);
+
+        if (Array.isArray(resultado)) {
+            res.status(400).json({ message: resultado[0], categoria: null });
             return;
+        }
+
+        const categoriaCreada = {
+        nro: resultado, // nro que devuelve el caso de uso.
+        nombre: dto.nombre,
+        color: dto.color
         };
 
-        res.status(201).json({ message: 'Categoría registrada exitosamente', categoria: dto });
+        res.status(201).json({
+        message: "Categoría registrada exitosamente",
+        categoria: categoriaCreada
+        });
         return;
-
     } catch (error) {
         console.error('Error al registrar categoría:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
@@ -68,11 +77,18 @@ export const editarCategoria = async (req:Request, res:Response): Promise<void> 
 
         const errores = await casouso.ejecutar(categoriaId, dto);
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 
-        res.status(200).json({ message: 'Categoría actualizada exitosamente', categoria: dto });
+        res.status(200).json({ message: 'Categoría actualizada exitosamente',
+            categoria: {
+                nro: categoriaId,
+                nombre: dto.nombre,
+                color: dto.color
+            } as { nro: number; nombre: string; color: string
+                } 
+            });
         return;
     } catch (error) {
         console.error('Error al editar categoría:', error);
@@ -92,7 +108,7 @@ export const eliminarCategoria = async (req: Request, res: Response): Promise<vo
 
         const errores = await casouso.ejecutar(categoriaId);
         if (errores.length > 0) {
-            res.status(400).json({ errores });
+            res.status(400).json({ message: errores[0] });
             return;
         };
 

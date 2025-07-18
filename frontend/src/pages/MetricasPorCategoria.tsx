@@ -3,6 +3,7 @@ import { getMetricasPorCategoria } from "../api/metricas";
 import type { MetricaPorCategoria } from "../types/MetricaPorCategoria.ts";
 import { FiltroMovimientos } from "../components/FiltroMovimientos.tsx";
 import { GraficoCategorias } from "../components/GraficoCategorias.tsx";
+import { GraficoBarrasCategorias } from "../components/GraficoBarras.tsx";
 
 export function MetricasPorCategoria() {
     const [metricas, setMetricas] = useState<MetricaPorCategoria[]>([]);
@@ -26,6 +27,8 @@ return (
         ) : (
             <div>
                 <GraficoCategorias datos={metricas} />
+                <GraficoBarrasCategorias datos={metricas} />
+                <h3>Detalles por categoría</h3>
                 <table>
                 <thead>
                     <tr>

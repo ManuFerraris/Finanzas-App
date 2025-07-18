@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
 
-app.options('*', cors());
+//app.options('*', cors());
 app.use(cors({
     origin: process.env.FRONTEND_ORIGIN,
     credentials: true
