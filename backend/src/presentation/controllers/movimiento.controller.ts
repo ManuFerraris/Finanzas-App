@@ -9,6 +9,7 @@ import { EliminarMovimiento } from '../../application/use-cases/movimientoUseCas
 import { ListarMovimientosFiltrados } from '../../application/use-cases/movimientoUseCase/ListarMovimientosFiltrados.ts';
 import { validarParametrosFiltrado } from './funcionesParaControladores/validarParametrosFiltrado.ts';
 import { ObtenerMetricasPorCategoria } from '../../application/use-cases/movimientoUseCase/ObtenerMetricasPorCategoria.ts';
+import { Categoria } from '../../domain/entities/Categoria.ts';
 
 export const registrarMovimiento = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -19,13 +20,16 @@ export const registrarMovimiento = async (req: Request, res: Response): Promise<
 
         const dto = req.body;
 
-        const errores = await casouso.ejecutar(dto);
-        if (errores.length > 0) {
-        res.status(400).json({ message: errores[0] });
-        return;
-        };
+        const resultado = await casouso.ejecutar(dto);
+        if (Array.isArray(resultado)) {
+            res.status(400).json({ message: resultado[0], movimiento: null });
+            return;
+        }
 
-        res.status(201).json({ message: 'Movimiento registrado correctamente.' });
+        res.status(201).json({ 
+            message: 'Movimiento registrado correctamente.',
+            movimiento: resultado
+        });
         return;
     } catch (error) {
         console.error('Error al registrar movimiento:', error);
@@ -44,7 +48,7 @@ export const listarMovimientos = async (req: Request, res: Response): Promise<vo
         const movimientos = await casouso.ejecutar();
 
         if (movimientos.length === 0) {
-            res.status(404).json({ message: 'No se encontraron movimientos' });
+            res.status(404).json({ movimientos: [], message: 'No se encontraron movimientos' });
             return;
         };
 
@@ -66,14 +70,28 @@ export const editarMovimiento = async (req: Request, res: Response): Promise<voi
 
         const id = Number(req.params.id);
         const dto = req.body;
-
-        const errores = await casouso.ejecutar(id, dto);
+        console.log("DTO recibido en el backend:", dto);
+        const { errores, categoria } = await casouso.ejecutar(id, dto);
         if (errores.length > 0) {
             res.status(400).json({ message: errores[0] });
             return;
         };
 
-        res.status(200).json({ message: 'Movimiento editado correctamente.' });
+        res.status(200).json({
+            message: 'Movimiento editado correctamente.',
+            movimiento: {
+                id: id,
+                descripcion: dto.descripcion,
+                monto: dto.monto,
+                fecha: dto.fecha,
+                tipo: dto.tipo,
+                categoria: {
+                    nro: categoria?.nro,
+                    nombre: categoria?.nombre,
+                    color: categoria?.color
+                }
+            }
+        });
         return;
 
     }catch(errores){

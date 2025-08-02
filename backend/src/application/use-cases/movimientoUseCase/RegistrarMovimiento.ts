@@ -6,7 +6,7 @@ export class RegistrarMovimiento {
 
     constructor(private readonly repo: MovimientoRepository) {}
 
-    async ejecutar(dto: RegistrarMovimientoDTO): Promise<string[]> {
+    async ejecutar(dto: RegistrarMovimientoDTO): Promise<string[] | Movimiento> {
         const errores = validarMovimiento(dto);
         if (errores.length > 0) return errores;
         
@@ -22,10 +22,10 @@ export class RegistrarMovimiento {
         movimiento.descripcion = dto.descripcion;
         movimiento.tipo = dto.tipo;
         movimiento.fecha = new Date(dto.fecha);
-        movimiento.monto = dto.monto;
+        movimiento.monto = Number(dto.monto);
         movimiento.categoria = categoria;
         
         await this.repo.guardar(movimiento);
-        return [];
+        return movimiento;
     };
 };

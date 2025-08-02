@@ -22,34 +22,79 @@ export function FormularioCategoria({ onCrearCategoria}: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-            <div style={{ marginBottom: "0.5rem" }}>
-                <label>
-                Nombre de categoría:
+        <form onSubmit={handleSubmit} style={formEstilo}>
+            <div style={grupoEstilo}>
+                <label htmlFor="nombre" style={labelEstilo}>Nombre de categoría:</label>
                 <input
+                    id="nombre"
                     type="text"
                     value={nombre}
+                    placeholder="Ingrese el nombre"
                     onChange={(e) => setNombre(e.target.value)}
-                    style={{ marginLeft: "0.5rem" }}
+                    style={inputEstilo}
                 />
-                </label>
             </div>
 
-            <div style={{ marginBottom: "0.5rem" }}>
-                <label>
-                Color:
+            <div style={grupoEstilo}>
+                <label htmlFor="color" style={labelEstilo}>Color:</label>
                 <input
+                    id="color"
                     type="color"
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
-                    style={{ marginLeft: "0.5rem", verticalAlign: "middle" }}
+                    style={colorInputEstilo}
                 />
-                </label>
             </div>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "red", marginBottom: "0.5rem" }}>{error}</p>}
 
-            <button type="submit">Crear categoría</button>
+            <button type="submit" style={botonEstilo}>Crear categoría</button>
         </form>
     );
 }
+
+const formEstilo: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    padding: "1rem",
+    backgroundColor: "#f9f9f9",
+    borderRadius: "8px",
+    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+    maxWidth: "500px",
+    margin: "0 auto"
+};
+
+const grupoEstilo: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem"
+};
+
+const labelEstilo: React.CSSProperties = {
+    fontWeight: "bold",
+    color: "#333"
+};
+
+const inputEstilo: React.CSSProperties = {
+    padding: "0.5rem",
+    borderRadius: "4px",
+    border: "1px solid #ccc"
+};
+
+const colorInputEstilo: React.CSSProperties = {
+    width: "60px",
+    height: "30px",
+    border: "none",
+    cursor: "pointer"
+};
+
+const botonEstilo: React.CSSProperties = {
+    padding: "0.6rem 1.2rem",
+    backgroundColor: "#007AFF",
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "bold"
+};

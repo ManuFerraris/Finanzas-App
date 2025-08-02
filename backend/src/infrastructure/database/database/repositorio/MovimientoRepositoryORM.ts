@@ -10,6 +10,7 @@ export class MovimientoRepositoryORM implements MovimientoRepository {
 
     async guardar(movimiento: Movimiento): Promise<void> {
         await this.em.persistAndFlush(movimiento);
+        await this.em.populate(movimiento, ["categoria"]);
     };
 
     async buscarCategoriaPorId(categoriaId: number): Promise<Categoria | null> {

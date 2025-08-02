@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { FormularioCategoria } from "../components/categorias/FormularioCategoria";
-import { TablaCategorias } from "../components/categorias/TablaCategorias";
+import { CenteredLayout } from "../utils/CenteredLayout.tsx";
+import { FormularioCategoria } from "../components/categorias/FormularioCategoria.tsx";
+import { TablaCategorias } from "../components/categorias/TablaCategorias.tsx";
 import type { Categoria } from "../types/Categoria.ts";
 import { ConfirmarEliminacion } from "../components/categorias/ConfirmarEliminacion.tsx";
 import {
@@ -10,7 +11,6 @@ import {
   editarCategoria as editarCategoriaAPI
 } from "../api/categorias.ts";
 import { ModalEditarCategoria } from "../components/categorias/ModalEditarCategoria.tsx";
-
 export function GestionCategorias() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [categoriaAEliminar, setCategoriaAEliminar] = useState<Categoria | null>(null);
@@ -93,26 +93,28 @@ export function GestionCategorias() {
   };
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2>Gestión de Categorías</h2>
-      <FormularioCategoria onCrearCategoria={crearCategoria} />
-      <TablaCategorias
-        categorias={categorias}
-        onEliminar={confirmarEliminacion}
-        onEditar={editarCategoria}
-      />
-      <ConfirmarEliminacion
-        visible={modalEliminarVisible}
-        nombre={categoriaAEliminar?.nombre ?? ""}
-        onConfirmar={eliminarCategoria}
-        onCancelar={cancelarEliminacion}
-      />
-      <ModalEditarCategoria
-        visible={modalEditarVisible}
-        categoria={categoriaAEditar}
-        onEditar={guardarEdicion}
-        onCancelar={()=> setModalEditarVisible(false)} 
-      />
-    </div>
+    <CenteredLayout>
+      <div style={{ padding: "1rem", color:"#555"}}>
+        <h2>Gestión de Categorías</h2>
+        <FormularioCategoria onCrearCategoria={crearCategoria} />
+        <TablaCategorias
+          categorias={categorias}
+          onEliminar={confirmarEliminacion}
+          onEditar={editarCategoria}
+        />
+        <ConfirmarEliminacion
+          visible={modalEliminarVisible}
+          nombre={categoriaAEliminar?.nombre ?? ""}
+          onConfirmar={eliminarCategoria}
+          onCancelar={cancelarEliminacion}
+        />
+        <ModalEditarCategoria
+          visible={modalEditarVisible}
+          categoria={categoriaAEditar}
+          onEditar={guardarEdicion}
+          onCancelar={()=> setModalEditarVisible(false)} 
+        />
+      </div>
+    </CenteredLayout>
   );
 }
